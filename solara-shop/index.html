@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLÀRA — Dynamic Global Sun Care</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF7F2;
+    --sand: #E8DFD0;
+    --terracotta: #C4704A;
+    --burnt: #8B4513;
+    --gold: #D4A853;
+    --deep: #1A1208;
+    --slate: #4A4035;
+    --warm-white: #FFFDF9;
+    --coral: #E8826A;
+    --sage: #8FA68A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--deep);
+    overflow-x: hidden;
+  }
+
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(250,247,242,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--sand);
+    padding: 0 2rem;
+  }
+  .header-inner {
+    max-width: 1400px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px; gap: 1rem;
+  }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem; font-weight: 600; letter-spacing: 0.12em;
+    color: var(--terracotta); text-decoration: none; white-space: nowrap;
+  }
+  .logo span { color: var(--deep); }
+
+  .search-bar {
+    flex: 1; max-width: 420px;
+    display: flex; align-items: center; gap: 0.5rem;
+    background: var(--warm-white); border: 1.5px solid var(--sand);
+    border-radius: 32px; padding: 0.45rem 1rem;
+    transition: border-color 0.2s;
+  }
+  .search-bar:focus-within { border-color: var(--terracotta); }
+  .search-bar input {
+    border: none; background: transparent; outline: none;
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    color: var(--deep); width: 100%;
+  }
+  .search-bar input::placeholder { color: #b0a898; }
+  .search-icon { color: #b0a898; font-size: 1rem; }
+
+  nav { display: flex; align-items: center; gap: 0.25rem; }
+  nav a {
+    font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em;
+    text-transform: uppercase; text-decoration: none;
+    color: var(--slate); padding: 0.4rem 0.75rem; border-radius: 20px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  nav a:hover, nav a.active { background: var(--terracotta); color: white; }
+
+  .cart-btn {
+    background: var(--deep); color: white;
+    border: none; border-radius: 24px; padding: 0.5rem 1.2rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 500;
+    cursor: pointer; display: flex; align-items: center; gap: 0.4rem;
+    transition: background 0.2s; white-space: nowrap;
+  }
+  .cart-btn:hover { background: var(--terracotta); }
+  .cart-count {
+    background: var(--gold); color: var(--deep);
+    border-radius: 50%; width: 18px; height: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.65rem; font-weight: 700;
+  }
+
+  .weekly-promo-banner {
+    background: linear-gradient(90deg, #8B4513 0%, #C4704A 50%, #8B4513 100%);
+    color: white; padding: 1.5rem 2rem;
+    text-align: center; position: relative; overflow: hidden;
+    margin: 0;
+  }
+  .weekly-promo-banner::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%; background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(255,255,255,0.05) 10px,
+      rgba(255,255,255,0.05) 20px
+    ); pointer-events: none;
+  }
+  .promo-banner-content {
+    max-width: 1400px; margin: 0 auto; position: relative; z-index: 1;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .promo-banner-text { flex: 1; min-width: 300px; }
+  .promo-banner-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 700; margin-bottom: 0.3rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+  }
+  .promo-banner-text p { font-size: 0.95rem; margin-bottom: 0.5rem; opacity: 0.95; }
+  .promo-countdown {
+    font-size: 0.85rem; font-weight: 600;
+    background: rgba(255,255,255,0.2); padding: 0.4rem 0.8rem;
+    border-radius: 20px; display: inline-block; margin-top: 0.5rem;
+  }
+  .promo-featured-items {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    justify-content: center; margin-top: 1rem;
+  }
+  .promo-item-tag {
+    background: var(--gold); color: var(--deep);
+    padding: 0.4rem 1rem; border-radius: 20px;
+    font-size: 0.8rem; font-weight: 700;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .promo-close-btn {
+    background: rgba(255,255,255,0.3); border: none;
+    border-radius: 50%; width: 32px; height: 32px;
+    color: white; cursor: pointer; font-size: 1.2rem;
+    transition: background 0.2s;
+  }
+  .promo-close-btn:hover { background: rgba(255,255,255,0.5); }
+
+  .hero {
+    background: linear-gradient(135deg, #1A1208 0%, #3D2B1A 50%, #C4704A 100%);
+    color: white; text-align: center; padding: 5rem 2rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-tag {
+    display: inline-block; background: rgba(212,168,83,0.2);
+    color: var(--gold); border: 1px solid rgba(212,168,83,0.4);
+    border-radius: 20px; padding: 0.3rem 1rem;
+    font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 300;
+    line-height: 1.1; margin-bottom: 1rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero p { font-size: 1rem; color: rgba(255,255,255,0.65); max-width: 480px; margin: 0 auto 2rem; }
+
+  .flash-sale-section { max-width: 1400px; margin: 3rem auto; padding: 0 2rem; }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 600; color: var(--deep);
+    margin-bottom: 2rem; text-align: center;
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+  }
+  .section-title::before, .section-title::after { content: ''; font-size: 1.5rem; }
+  .flash-sale-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem; margin-bottom: 3rem;
+  }
+  .flash-card {
+    background: var(--warm-white); border: 2px solid var(--terracotta);
+    border-radius: 20px; overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    cursor: pointer; display: flex; flex-direction: column;
+    position: relative; box-shadow: 0 8px 24px rgba(196,112,74,0.15);
+  }
+  .flash-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 40px rgba(196,112,74,0.25);
+  }
+  .flash-card-img {
+    aspect-ratio: 1/1.15; background: linear-gradient(135deg, var(--sand), #f5e6d3);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .flash-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+  .flash-card:hover .flash-card-img img { transform: scale(1.05); }
+  .discount-badge {
+    position: absolute; top: 1rem; left: 1rem;
+    background: var(--coral); color: white;
+    padding: 0.6rem 1rem; border-radius: 12px;
+    font-size: 0.9rem; font-weight: 700;
+    z-index: 3; box-shadow: 0 4px 12px rgba(0,0,0,0.2); text-align: center;
+  }
+  .discount-badge-percent { display: block; font-size: 1.4rem; font-weight: 800; }
+  .discount-badge-text { display: block; font-size: 0.65rem; margin-top: 0.2rem; }
+  .wishlist-btn-flash {
+    position: absolute; top: 1rem; right: 1rem;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255,255,255,0.95); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; transition: all 0.2s; z-index: 2;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .wishlist-btn-flash:hover { transform: scale(1.1); }
+  .wishlist-btn-flash.liked { color: var(--coral); }
+  .flash-card-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+  .flash-card-country {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--terracotta); margin-bottom: 0.5rem;
+  }
+  .flash-card-name {
+    font-size: 1rem; font-weight: 600; color: var(--deep);
+    margin-bottom: 0.3rem; line-height: 1.3;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .flash-card-brand { font-size: 0.8rem; color: var(--slate); margin-bottom: 0.6rem; }
+  .flash-card-spf {
+    display: inline-block; font-size: 0.7rem; font-weight: 700;
+    background: var(--sand); color: var(--slate);
+    border-radius: 8px; padding: 0.2rem 0.6rem;
+    margin-bottom: 0.8rem; width: max-content;
+  }
+  .flash-card-stars { font-size: 0.8rem; color: var(--gold); margin-bottom: 0.8rem; }
+  .flash-card-stars span { color: var(--slate); margin-left: 0.3rem; }
+  .flash-card-prices { margin-bottom: 1rem; }
+  .flash-card-original-price {
+    font-size: 0.9rem; color: var(--slate);
+    text-decoration: line-through; margin-bottom: 0.4rem;
+  }
+  .flash-card-price {
+    font-size: 1.5rem; font-weight: 800; color: var(--coral);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .flash-card-savings { font-size: 0.75rem; color: var(--coral); font-weight: 700; }
+  .flash-card-actions { display: flex; gap: 0.6rem; margin-top: auto; }
+  .flash-qty-control {
+    display: flex; align-items: center; border: 1.5px solid var(--sand);
+    border-radius: 8px; overflow: hidden; background: var(--cream);
+  }
+  .flash-qty-btn {
+    width: 30px; height: 30px; border: none; background: transparent;
+    cursor: pointer; font-size: 0.95rem; color: var(--slate);
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .flash-qty-btn:hover { background: var(--sand); }
+  .flash-qty-num {
+    width: 30px; text-align: center; font-size: 0.85rem;
+    font-weight: 600; color: var(--deep);
+  }
+  .flash-add-btn {
+    flex: 1; background: var(--terracotta); color: white;
+    border: none; border-radius: 8px; padding: 0.6rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.8rem;
+    font-weight: 700; cursor: pointer; transition: background 0.2s;
+  }
+  .flash-add-btn:hover { background: var(--burnt); }
+
+  .main-layout {
+    max-width: 1400px; margin: 0 auto;
+    display: grid; grid-template-columns: 240px 1fr;
+    gap: 2rem; padding: 2rem;
+  }
+  .sidebar { position: sticky; top: 130px; align-self: start; }
+  .sidebar-section {
+    background: var(--warm-white); border: 1px solid var(--sand);
+    border-radius: 16px; padding: 1.25rem; margin-bottom: 1rem;
+  }
+  .sidebar-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; font-weight: 600; letter-spacing: 0.05em;
+    color: var(--deep); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .sidebar-title::after { content: ''; flex: 1; height: 1px; background: var(--sand); }
+  .skin-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .skin-chip {
+    display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
+    padding: 0.6rem 0.4rem; border: 1.5px solid var(--sand);
+    border-radius: 12px; cursor: pointer; transition: all 0.2s;
+    font-size: 0.68rem; font-weight: 500; color: var(--slate);
+    text-align: center; background: transparent; font-family: 'DM Sans', sans-serif;
+  }
+  .skin-chip .chip-icon { font-size: 1.2rem; }
+  .skin-chip:hover { border-color: var(--terracotta); color: var(--terracotta); background: rgba(196,112,74,0.05); }
+  .skin-chip.active { border-color: var(--terracotta); background: rgba(196,112,74,0.1); color: var(--terracotta); }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem; margin-bottom: 3rem;
+  }
+  .product-card {
+    background: var(--warm-white); border: 1px solid var(--sand);
+    border-radius: 18px; overflow: hidden;
+    transition: all 0.28s cubic-bezier(0.23, 1, 0.32, 1);
+    cursor: pointer; display: flex; flex-direction: column;
+    position: relative;
+  }
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(26,18,8,0.12);
+    border-color: transparent;
+  }
+  .product-promo-badge {
+    position: absolute; top: 0.6rem; left: 0.6rem;
+    background: var(--coral); color: white;
+    padding: 0.3rem 0.6rem; border-radius: 8px;
+    font-size: 0.65rem; font-weight: 700;
+    z-index: 3; text-transform: uppercase;
+  }
+  .product-img {
+    aspect-ratio: 1/1.1; background: var(--sand);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .product-img img { width: 100%; height: 100%; object-fit: cover; }
+  .wishlist-btn {
+    position: absolute; top: 0.6rem; right: 0.6rem;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: rgba(255,255,255,0.9); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; transition: all 0.2s; z-index: 2;
+  }
+  .wishlist-btn.liked { color: red; }
+  .product-body { padding: 1rem; flex: 1; display: flex; flex-direction: column; }
+  .product-country { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 0.25rem; }
+  .product-name { font-size: 0.88rem; font-weight: 500; color: var(--deep); margin-bottom: 0.2rem; line-height: 1.3; }
+  .product-brand { font-size: 0.72rem; color: var(--slate); margin-bottom: 0.5rem; }
+  .product-spf {
+    display: inline-block; font-size: 0.62rem; font-weight: 700;
+    background: var(--sand); color: var(--slate);
+    border-radius: 6px; padding: 0.15rem 0.45rem; margin-bottom: 0.5rem; width: max-content;
+  }
+  .product-stars { font-size: 0.72rem; color: var(--gold); margin-bottom: 0.6rem; }
+  .product-stars span { color: var(--slate); margin-left: 0.25rem; }
+  .price-row { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.6rem; }
+  .price { font-size: 1.05rem; font-weight: 600; color: var(--deep); }
+  .price-original { font-size: 0.85rem; color: var(--slate); text-decoration: line-through; margin-right: 0.5rem; }
+  .add-row { display: flex; align-items: center; gap: 0.4rem; }
+  .qty-control {
+    display: flex; align-items: center; border: 1.5px solid var(--sand);
+    border-radius: 8px; overflow: hidden;
+  }
+  .qty-btn {
+    width: 26px; height: 26px; border: none; background: transparent;
+    cursor: pointer; font-size: 0.9rem; color: var(--slate);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .qty-btn:hover { background: var(--sand); }
+  .qty-num { width: 26px; text-align: center; font-size: 0.78rem; font-weight: 600; color: var(--deep); }
+  .add-btn {
+    flex: 1; background: var(--terracotta); color: white;
+    border: none; border-radius: 8px; padding: 0.4rem 0.5rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 600;
+    cursor: pointer; letter-spacing: 0.04em; transition: background 0.2s; white-space: nowrap;
+  }
+  .add-btn:hover { background: var(--burnt); }
+  .section-header { margin-bottom: 1.5rem; }
+  .section-label { font-size: 0.9rem; font-weight: 600; color: var(--slate); display: flex; align-items: center; gap: 0.5rem; }
+  .badge-count { background: var(--terracotta); color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.75rem; }
+
+  .cart-modal {
+    display: none;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); z-index: 1000;
+    align-items: center; justify-content: center;
+    overflow-y: auto;
+  }
+  .cart-modal.active { display: flex; }
+  .cart-content {
+    background: var(--warm-white);
+    border-radius: 20px; padding: 2rem;
+    max-width: 600px; width: 90%;
+    margin: 2rem auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .cart-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.5rem; padding-bottom: 1rem;
+    border-bottom: 2px solid var(--sand);
+  }
+  .cart-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem; color: var(--deep);
+  }
+  .cart-close {
+    background: var(--sand); border: none; border-radius: 50%;
+    width: 32px; height: 32px; cursor: pointer; font-size: 1.2rem;
+    color: var(--deep);
+  }
+  .cart-items { margin-bottom: 1.5rem; max-height: 400px; overflow-y: auto; }
+  .cart-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 0; border-bottom: 1px solid var(--sand);
+    flex-wrap: wrap; gap: 0.75rem;
+  }
+  .cart-item-info { flex: 1; min-width: 180px; }
+  .cart-item-info h4 { font-size: 0.95rem; font-weight: 600; color: var(--deep); margin-bottom: 0.3rem; }
+  .cart-item-info p { font-size: 0.75rem; color: var(--slate); }
+  .cart-item-actions { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+  .cart-qty-control {
+    display: flex; align-items: center; border: 1.5px solid var(--sand);
+    border-radius: 8px; overflow: hidden; background: var(--cream);
+  }
+  .cart-qty-btn {
+    width: 28px; height: 28px; border: none; background: transparent;
+    cursor: pointer; font-size: 0.95rem; color: var(--slate);
+  }
+  .cart-qty-btn:hover { background: var(--sand); }
+  .cart-qty-num {
+    width: 28px; text-align: center; font-size: 0.85rem;
+    font-weight: 600; color: var(--deep);
+  }
+  .cart-item-price { font-size: 1rem; font-weight: 700; color: var(--deep); min-width: 70px; text-align: right; }
+  .cart-remove-btn {
+    background: var(--coral); color: white; border: none;
+    border-radius: 6px; padding: 0.3rem 0.6rem;
+    font-size: 0.7rem; cursor: pointer;
+  }
+  .promo-section {
+    background: rgba(212,168,83,0.1); border: 1.5px solid var(--gold);
+    border-radius: 12px; padding: 1rem; margin-bottom: 1rem;
+  }
+  .promo-section h5 { font-size: 0.85rem; font-weight: 600; color: var(--terracotta); margin-bottom: 0.5rem; }
+  .promo-badge {
+    display: inline-block; background: var(--gold); color: var(--deep);
+    border-radius: 8px; padding: 0.3rem 0.6rem;
+    font-size: 0.7rem; font-weight: 700; margin-right: 0.5rem;
+  }
+  .cart-summary {
+    background: var(--sand); border-radius: 12px;
+    padding: 1.5rem; margin-bottom: 1rem;
+    border: 2px solid var(--terracotta);
+  }
+  .summary-row {
+    display: flex; justify-content: space-between;
+    font-size: 0.95rem; margin-bottom: 0.8rem;
+  }
+  .summary-label { font-weight: 600; color: var(--deep); }
+  .summary-value { font-weight: 600; color: var(--slate); }
+  .summary-row.discount { color: var(--coral); font-weight: 700; }
+  .summary-row.total {
+    font-size: 1.3rem; font-weight: 800; color: var(--terracotta);
+    border-top: 2px solid var(--terracotta); padding-top: 1rem;
+    margin-top: 1rem; margin-bottom: 0;
+  }
+  .summary-row.total .summary-value { color: var(--terracotta); font-size: 1.4rem; }
+  .receipt-divider { border-top: 1px dashed var(--slate); margin: 1rem 0; opacity: 0.5; }
+  .checkout-btn {
+    width: 100%; background: var(--terracotta); color: white;
+    border: none; border-radius: 12px; padding: 0.9rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 700;
+    cursor: pointer; transition: background 0.2s; margin-top: 0.5rem;
+  }
+  .checkout-btn:hover { background: var(--burnt); }
+  .checkout-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .empty-cart { text-align: center; padding: 2rem; color: var(--slate); font-style: italic; }
+
+  .checkout-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-group label {
+    display: block; font-size: 0.75rem; font-weight: 600;
+    text-transform: uppercase; margin-bottom: 0.4rem; color: var(--deep);
+  }
+  .form-group input,
+  .form-group textarea {
+    width: 100%; padding: 0.6rem 1rem; border: 1.5px solid var(--sand);
+    border-radius: 8px; font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem; outline: none; background: var(--cream);
+  }
+  .form-group input:focus,
+  .form-group textarea:focus { border-color: var(--terracotta); }
+  .form-group input.input-error,
+  .form-group textarea.input-error { border-color: var(--coral); }
+  .field-error {
+    display: block; font-size: 0.72rem; color: var(--coral);
+    margin-top: 0.35rem; min-height: 1rem;
+  }
+  .checkout-summary { margin-top: 0.5rem; }
+  .checkout-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .checkout-back-btn {
+    background: var(--sand); color: var(--deep); border: none;
+    border-radius: 12px; padding: 0.9rem; font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  }
+  .checkout-back-btn:hover { background: #ddd4c4; }
+  .checkout-success {
+    text-align: center; padding: 2rem 1rem;
+    background: rgba(143,166,138,0.15); color: #4a5d46;
+    border-radius: 12px; font-size: 0.95rem; font-weight: 600;
+  }
+
+  .social-links { display: flex; gap: 1rem; justify-content: center; margin-top: 1rem; }
+  .social-link {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--terracotta); color: white;
+    text-decoration: none; font-size: 1.2rem; transition: all 0.3s;
+  }
+  .social-link:hover { background: var(--burnt); transform: scale(1.1); }
+
+  footer {
+    background: var(--deep); color: rgba(255,255,255,0.55);
+    text-align: center; padding: 2rem; font-size: 0.78rem; letter-spacing: 0.05em; margin-top: 2rem;
+  }
+  footer strong { color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 1rem; }
+
+  @media (max-width: 900px) {
+    .main-layout { grid-template-columns: 1fr; }
+    .sidebar { position: static; }
+    .skin-type-grid { grid-template-columns: repeat(4, 1fr); }
+    .promo-banner-content { flex-direction: column; text-align: center; }
+    .flash-sale-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+    .checkout-actions { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="weekly-promo-banner" id="promoBanner">
+  <div class="promo-banner-content">
+    <div class="promo-banner-text">
+      <h2> Weekly Flash Sale!</h2>
+      <p>Up to 30% OFF on selected premium suncreams this week only!</p>
+      <div class="promo-countdown">⏰ Ends in: <span id="countdownTimer">7 days</span></div>
+      <div class="promo-featured-items">
+        <span class="promo-item-tag">Biore UV -25%</span>
+        <span class="promo-item-tag">Anessa -20%</span>
+        <span class="promo-item-tag">ISDIN -30%</span>
+        <span class="promo-item-tag">Cosrx -15%</span>
+      </div>
+    </div>
+    <button class="promo-close-btn" id="promoCloseBtn">✕</button>
+  </div>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="logo">SOL<span>À</span>RA</a>
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search Product name ...">
+    </div>
+    <nav id="navFilters">
+      <a class="nav-link active" data-nav="all">All</a>
+      <a class="nav-link" data-nav="bestseller">Bestsellers</a>
+      <a class="nav-link" data-nav="new">New</a>
+    </nav>
+    <button class="cart-btn" id="cartBtnHeader">Cart <span class="cart-count" id="cartCount">0</span></button>
+  </div>
+</header>
+
+<div class="hero">
+  <span class="hero-tag">Global Sun Protection</span>
+  <h1>Find Your Perfect <em>Sun Defense</em></h1>
+  <p>Curated premium sun creams optimized for every skin t and local climate.</p>
+</div>
+
+<div class="flash-sale-section" id="flashSaleSection">
+  <div class="section-title"> Flash Sale Exclusives </div>
+  <div class="flash-sale-grid" id="flashSaleGrid"></div>
+</div>
+
+<div class="main-layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Skin Types</div>
+      <div class="skin-type-grid">
+        <button class="skin-chip active" data-filter="all"><span class="chip-icon"></span>Show All</button>
+        <button class="skin-chip" data-filter="oily"><span class="chip-icon"></span>Oily</button>
+        <button class="skin-chip" data-filter="dry"><span class="chip-icon"></span>Dry</button>
+        <button class="skin-chip" data-filter="sensitive"><span class="chip-icon"></span>Sensitive</button>
+        <button class="skin-chip" data-filter="normal"><span class="chip-icon"></span>Normal</button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content-area">
+    <div class="section-header">
+      <div class="section-label">Available 30 Items <span class="badge-count" id="matchCount">30 Items</span></div>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+  </main>
+</div>
+
+<div class="cart-modal" id="cartModal">
+  <div class="cart-content">
+    <div class="cart-header">
+      <h2 id="cartModalTitle">Your Cart</h2>
+      <button class="cart-close" id="cartClose">✕</button>
+    </div>
+
+    <div id="cartView">
+      <div class="promo-section">
+        <h5>🎉 Special Offers 10% OFF For First Purchase</h5>
+        <div id="firstBuyNote">
+          <span class="promo-badge">FIRST BUY 10%</span> Get 10% off on your first purchase!
+        </div>
+      </div>
+
+      <div id="cartItemsContainer" class="cart-items"></div>
+
+      <div class="cart-summary">
+        <div class="summary-row">
+          <span class="summary-label">Subtotal:</span>
+          <span class="summary-value" id="subtotal">$0.00</span>
+        </div>
+        <div class="receipt-divider"></div>
+        <div class="summary-row discount" id="discountRow" style="display: none;">
+          <span class="summary-label" id="discountLabel">First Purchase Discount (10%):</span>
+          <span class="summary-value" id="discountAmount">-$0.00</span>
+        </div>
+        <div class="summary-row total">
+          <span class="summary-label">Final Total:</span>
+          <span class="summary-value" id="totalPrice">$0.00</span>
+        </div>
+      </div>
+
+      <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+    </div>
+
+    <div id="checkoutView" style="display: none;">
+      <form id="checkoutForm" class="checkout-form" novalidate>
+        <div class="form-group">
+          <label for="checkoutFullName">Full Name *</label>
+          <input type="text" id="checkoutFullName" placeholder="Jane Doe" required>
+          <span class="field-error" id="checkoutFullNameError"></span>
+        </div>
+        <div class="form-group">
+          <label for="checkoutPhone">Phone Number *</label>
+          <input type="tel" id="checkoutPhone" placeholder="+1 (555) 000-0000" required>
+          <span class="field-error" id="checkoutPhoneError"></span>
+        </div>
+        <div class="form-group">
+          <label for="checkoutEmail">Email Address *</label>
+          <input type="email" id="checkoutEmail" placeholder="yourname@gmail.com" required>
+          <span class="field-error" id="checkoutEmailError"></span>
+        </div>
+        <div class="form-group">
+          <label for="checkoutAddress">Delivery Address *</label>
+          <textarea id="checkoutAddress" rows="3" placeholder="Street, City, State, ZIP" required></textarea>
+          <span class="field-error" id="checkoutAddressError"></span>
+        </div>
+
+        <div class="cart-summary checkout-summary">
+          <div class="summary-row">
+            <span class="summary-label">Subtotal:</span>
+            <span class="summary-value" id="checkoutSubtotal">$0.00</span>
+          </div>
+          <div class="summary-row discount" id="checkoutDiscountRow" style="display: none;">
+            <span class="summary-label">First Purchase Discount (10%):</span>
+            <span class="summary-value" id="checkoutDiscountAmount">-$0.00</span>
+          </div>
+          <div class="summary-row total">
+            <span class="summary-label">Final Total:</span>
+            <span class="summary-value" id="checkoutTotal">$0.00</span>
+          </div>
+        </div>
+
+        <div class="checkout-actions">
+          <button type="button" class="checkout-back-btn" id="checkoutBackBtn">← Back to Cart</button>
+          <button type="submit" class="checkout-btn">Place Order</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="checkoutSuccess" class="checkout-success" style="display: none;">
+       Thank you! Your order has been placed successfully.
+    </div>
+  </div>
+</div>
+
+<div class="main-layout" style="margin-top: 0; padding-top: 0;">
+  <div style="grid-column: 1 / -1; background: var(--warm-white); border: 1px solid var(--sand); border-radius: 18px; padding: 2rem;">
+    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin-bottom: 0.5rem;">Join SOLÀRA Club</h3>
+    <p style="font-size: 0.85rem; color: var(--slate); margin-bottom: 1.5rem;">Enter your details to receive specialized sunscreen recommendations and track your cart updates. Follow us on social media!</p>
+
+    <form id="contactForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) auto; gap: 1rem; align-items: end;">
+      <div>
+        <label style="display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; margin-bottom: 0.4rem; color: var(--deep);">Email Address</label>
+        <input type="email" id="userEmail" placeholder="yourname@gmail.com" required style="width: 100%; padding: 0.6rem 1rem; border: 1.5px solid var(--sand); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; outline: none; background: var(--cream);">
+      </div>
+      <div>
+        <label style="display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; margin-bottom: 0.4rem; color: var(--deep);">Phone Number</label>
+        <input type="tel" id="userPhone" placeholder="+1 (555) 000-0000" required style="width: 100%; padding: 0.6rem 1rem; border: 1.5px solid var(--sand); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; outline: none; background: var(--cream);">
+      </div>
+      <button type="submit" style="background: var(--deep); color: white; border: none; border-radius: 8px; padding: 0.65rem 1.5rem; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer;">Subscribe</button>
+    </form>
+
+    <div class="social-links">
+      <a href="https://instagram.com" target="_blank" class="social-link" title="Follow us on Instagram">📷</a>
+      <a href="https://gmail.com" target="_blank" class="social-link" title="Email us">✉️</a>
+    </div>
+
+    <div id="formSuccessMessage" style="display: none; margin-top: 1rem; padding: 0.75rem; background: rgba(143,166,138,0.15); color: #4a5d46; border-radius: 8px; font-size: 0.85rem; font-weight: 500; text-align: center;">
+       Thank you! Your contact profiles have been dynamically registered to our session log.
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 <strong>SOLÀRA</strong> Global Sun Care. Beautifully protected skin.</p>
+</footer>
+
+<script>
+  const products = [
+    { id: 1, skin: "dry to Normal", status: "bestseller", name: "Aqua Rich watery Essence", brand: "Biore UV", country: "🇯🇵 Japan", spf: "SPF 50+ / pa++++", stars: "★★★★☆", reviews: "98", price: 13.00, promoPrice: 9.75, promoPercent: 25, img: "https://i.pinimg.com/736x/f0/da/57/f0da579cd4569fbe6587b163c7591ca1.jpg", isFlash: true },
+    { id: 2, skin: "Dry to Normal", status: "new", name: "Fusion Water Magic", brand: "ISDIN", country: "🇺🇸 United States", spf: "SPF 50", stars: "★★★★★", reviews: "340", price: 38.00, promoPrice: 26.60, promoPercent: 30, img: "https://i.pinimg.com/1200x/99/fc/9a/99fc9a2daa0da88b0bcf4de91232d03e.jpg", isFlash: true },
+    { id: 3, skin: "oily", status: "bestseller", name: "Perfect UV Suncream Skincare Milk", brand: "Anessa", country: "jp Japan", spf: "SPF 50+/ pa++++", stars: "★★★★☆", reviews: "55", price: 17.00, promoPrice: 13.60, promoPercent: 20, img: "https://i.pinimg.com/736x/16/07/8f/16078f4e3062dbce9aca4b2a9e963c3b.jpg", isFlash: true },
+    { id: 4, skin: "dry to Normal", status: "new", name: "Ultra light Invisible Suncream", brand: "Cosrx", country: "🇰🇷 South Korea", spf: "SPF 50+/ pa++++", stars: "★★★★★", reviews: "41", price: 8.00, promoPrice: 6.80, promoPercent: 15, img: "https://i.pinimg.com/1200x/45/5f/cb/455fcb81181bdf31646ca059100cb24c.jpg", isFlash: true },
+    { id: 5, skin: "oily to Normal", status: "bestseller", name: "Soft Finish Sun Milk", brand: "Missha", country: "🇰🇷 South Korea", spf: "SPF 50+", stars: "★★★★★", reviews: "142", price: 10.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/736x/8f/4a/98/8f4a98c47750048aa77f7274d574eb71.jpg", isFlash: false },
+    { id: 6, skin: "Oily and Sensitive", status: "new", name: "Tinted Sensitive Mineral", brand: "Eucerin", country: "🇫🇷 France", spf: "SPF 35", stars: "★★★★★", reviews: "210", price: 32.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/1200x/b5/23/17/b52317310c14b1a520a30c08fd1129e7.jpg", isFlash: false },
+    { id: 7, skin: "Normal to Sensitive", status: "bestseller", name: "EltaMD Uv clear", brand: "Elta", country: "🇺🇸 United States", spf: "SPF 46", stars: "★★★★☆", reviews: "64", price: 19.50, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/736x/3a/eb/a9/3aeba936ad91d9739538f87b26a50681.jpg", isFlash: false },
+    { id: 8, skin: "normal to oily", status: "new", name: "Relief Sun Aqua fresh:rice + B5", brand: "Beauty of Joseon", country: "🇰🇷 South Korea", spf: "SPF 50+ / pa++++", stars: "★★★★★", reviews: "87", price: 10.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/1200x/a3/48/d9/a348d959741dfec17e9378ea6c0eae27.jpg", isFlash: false },
+    { id: 9, skin: "Sensitive", status: "bestseller", name: "Sensitive Suncream", brand: "Cancer Council", country: "🇦🇺 Australia", spf: "SPF 50+", stars: "★★★★☆", reviews: "114", price: 14.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/736x/0d/61/2d/0d612d9f2057797c9b11cb188539fc42.jpg", isFlash: false },
+    { id: 10, skin: "sensitive", status: "bestseller", name: "Perfect UV Suncream Mild Milk", brand: "Anessa", country: "🇯🇵 Japan", spf: "SPF 50+/ pa++++", stars: "★★★★★", reviews: "72", price: 19.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/736x/9d/25/23/9d2523bfcc3ac4b9274111b99e0e68ee.jpg", isFlash: false },
+    { id: 11, skin: "Normal", status: "new", name: "Enjoy Super Mild sun Essence", brand: "Scinic", country: "🇰🇷 South Korea", spf: "SPF 50+/ pa++++", stars: "★★★★☆", reviews: "89", price: 8.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/1200x/19/2c/f0/192cf0d7b400a9ff3480ce6af7f281dc.jpg", isFlash: false },
+    { id: 12, skin: "oily", status: "bestseller", name: "Anthelios UVMUNE 400 oil Control", brand: "La Roche-posay", country: "fr France", spf: "SPF 50+", stars: "★★★★★", reviews: "104", price: 19.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/1200x/66/26/ca/6626ca475a89707bb4a26624a79d84c0.jpg", isFlash: false },
+    { id: 13, skin: "normal to Sensitive", status: "new", name: "Anthelios UVAIRTM Serum", brand: "La Roche-posay", country: "fr France", spf: "SPF 50+", stars: "★★★★☆", reviews: "45", price: 23.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/736x/f6/31/14/f631143c2bfbe53b601c5a6a629e557b.jpg", isFlash: false },
+    { id: 14, skin: "oily", status: "bestseller", name: "Lean Screen", brand: "Ultra Viollete", country: "🇦🇺 Australia", spf: "SPF 50+", stars: "★★★★★", reviews: "167", price: 38.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/736x/b5/b2/cf/b5b2cf60862a4a873441fc4c8feee6a3.jpg", isFlash: false },
+    { id: 15, skin: "Normal to Sensitive", status: "new", name: "Sunkiller", brand: "KissMe", country: "jp Japan", spf: "SPF 50/ pa++++", stars: "★★★★★", reviews: "52", price: 7.50, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/1200x/ce/69/95/ce699588ab5fc4600074ade9ff45f055.jpg", isFlash: false },
+    { id: 16, skin: "Normal", status: "bestseller", name: "UV Protection Facial Cream", brand: "Cuel", country: "🇯🇵 Japan", spf: "SPF 30+ / PA+++", stars: "★★★★☆", reviews: "289", price: 10.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/1200x/bf/66/04/bf6604d8e7fad098b848c42362919414.jpg", isFlash: false },
+    { id: 17, skin: "oily", status: "new", name: "Birch Juice Mild up Suncream", brand: "Roundlab", country: "kr Korea", spf: "SPF 50/pa++++", stars: "★★★★☆", reviews: "81", price: 10.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/736x/46/14/2a/46142aa1ec6b345c65c8731830d10e8c.jpg", isFlash: false },
+    { id: 18, skin: "dry", status: "bestseller", name: "Hyaluronic Acid Watery sun gel", brand: "Isntree", country: "kr Korea", spf: "SPF 50+/ pa++++", stars: "★★★★★", reviews: "113", price: 8.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/1200x/68/e7/e8/68e7e877040cfea453e42a8bd1de5531.jpg", isFlash: false },
+    { id: 19, skin: "oily", status: "new", name: "Dry Touch facial Suncreen", brand: "Clarin", country: "fr france", spf: "SPF 50+", stars: "★★★★☆", reviews: "74", price: 45.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/736x/75/b7/0c/75b70cca09d892059fb580af0bc72032.jpg", isFlash: false },
+    { id: 20, skin: "Normal", status: "bestseller", name: "Invisible Serum Suncreen", brand: "Garnier", country: "usa United States", spf: "SPF 50+", stars: "★★★★★", reviews: "195", price: 10.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/1200x/f6/9f/6c/f69f6c8f47a6f34c8a429415899cdbff.jpg", isFlash: false },
+    { id: 21, skin: "oily", status: "new", name: "Dr.G Green mild up Sun", brand: "Dr.G", country: "🇰🇷 South Korea", spf: "SPF 50+/ pa++++", stars: "★★★★★", reviews: "38", price: 10.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/1200x/27/2d/af/272daf61a255c4f03eda4d63e5c8d2eb.jpg", isFlash: false },
+    { id: 22, skin: "dry to Normal", status: "bestseller", name: "Kose Gold UV Perfect Gel Suncut", brand: "Kose", country: "jp Japan", spf: "SPF 50+/ pa++++", stars: "★★★★☆", reviews: "92", price: 12.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/1200x/52/66/11/526611d921a39c4a283a27499e56d01a.jpg", isFlash: false },
+    { id: 23, skin: "Sensitive to Normal", status: "new", name: "Invisible Fluid", brand: "L'oreal", country: "🇫🇷 France", spf: "SPF 50+/ pa++++", stars: "★★★★★", reviews: "110", price: 18.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/1200x/1f/ad/74/1fad749d2f22530be3770a5c77f4baec.jpg", isFlash: false },
+    { id: 24, skin: "Sensitive to Normal", status: "bestseller", name: "SUNFORGETTABLE TOTAL PROTECTION", brand: "ColoreScience", country: "usa United States", spf: "SPF 50+/ pa++++", stars: "★★★★☆", reviews: "131", price: 58.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/736x/b5/66/33/b56633ea88dbd13439b695b10dc59d11.jpg", isFlash: false },
+    { id: 25, skin: "Dry to Normal", status: "new", name: "ALLIE Gel UV ex", brand: "ALLIE", country: "🇯🇵 Japan", spf: "SPF 50+/ pa++++", stars: "★★★★★", reviews: "215", price: 13.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/1200x/97/4a/b1/974ab1a2f2aadf06cb3e29325d3610c0.jpg", isFlash: false },
+    { id: 26, skin: "Oily", status: "bestseller", name: "Ultra Sheer Dry Touch", brand: "Neutrugena", country: "usa United States", spf: "SPF 100+", stars: "★★★★☆", reviews: "63", price: 21.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/736x/dd/08/26/dd082658e003d190b75a2543af671524.jpg", isFlash: false },
+    { id: 27, skin: "Dry to Normal", status: "new", name: "The Milky Suncreen", brand: "Tatcha", country: "jp Japan", spf: "SPF 50+/ pa++++", stars: "★★★★★", reviews: "147", price: 29.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/236x/9c/87/3f/9c873f6c24b0553c3f77fbb5179f1ddf.jpg", isFlash: false },
+    { id: 28, skin: "dry to Normal", status: "bestseller", name: "Tocobo Bio Watery Suncream", brand: "Tocobo", country: "kr south Korea", spf: "SPF 50+/ pa++++", stars: "★★★★★", reviews: "84", price: 7.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/736x/0f/90/dd/0f90ddd92d7bc77b8ad827800b704c43.jpg", isFlash: false },
+    { id: 29, skin: "sensitive to Normal", status: "new", name: "Ultimate Sun Protector Lotion", brand: "Shisheido", country: "jp japan", spf: "SPF 60+", stars: "★★★★☆", reviews: "102", price: 45.00, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/236x/c2/45/ab/c245ab81fb6ba230b58abf2c61216a1b.jpg", isFlash: false },
+    { id: 30, skin: "normal to Dry", status: "bestseller", name: "Nivea Sunlotion Protect&moiture", brand: "Nivea", country: "usa United States", spf: "SPF 50+", stars: "★★★★★", reviews: "119", price: 10.50, promoPrice: null, promoPercent: 0, img: "https://i.pinimg.com/1200x/72/57/82/725782bb0aaee1bfd54d93f06c5f96f2.jpg", isFlash: false }
+  ];
+
+  const FIRST_BUY_KEY = 'solara_hasPurchased';
+  const FIRST_BUY_DISCOUNT = 0.10;
+
+  let runningActiveFilter = "all";
+  let activeNavFilter = "all";
+  let cartItems = [];
+
+  const searchNode = document.getElementById('searchInput');
+  const chipNodes = document.querySelectorAll('.skin-chip');
+  const navNodes = document.querySelectorAll('.nav-link');
+  const matchCounterNode = document.getElementById('matchCount');
+  const cartCounterNode = document.getElementById('cartCount');
+  const contactFormNode = document.getElementById('contactForm');
+  const successMessageNode = document.getElementById('formSuccessMessage');
+  const cartBtnHeader = document.getElementById('cartBtnHeader');
+  const cartModal = document.getElementById('cartModal');
+  const cartClose = document.getElementById('cartClose');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+  const promoCloseBtn = document.getElementById('promoCloseBtn');
+  const promoBanner = document.getElementById('promoBanner');
+  const productGridNode = document.getElementById('productGrid');
+  const flashSaleGridNode = document.getElementById('flashSaleGrid');
+  const cartView = document.getElementById('cartView');
+  const checkoutView = document.getElementById('checkoutView');
+  const checkoutForm = document.getElementById('checkoutForm');
+  const checkoutBackBtn = document.getElementById('checkoutBackBtn');
+  const checkoutSuccess = document.getElementById('checkoutSuccess');
+
+  window.addEventListener('DOMContentLoaded', () => {
+    renderFlashSaleProducts();
+    renderAllProducts();
+    startCountdown();
+    syncCartCount();
+    updateCartDisplay();
+  });
+
+  function formatMoney(amount) {
+    return `$${amount.toFixed(2)}`;
+  }
+
+  function getProductPrice(product) {
+    return product.promoPrice != null ? product.promoPrice : product.price;
+  }
+
+  function isFirstTimeCustomer() {
+    return !localStorage.getItem(FIRST_BUY_KEY);
+  }
+
+  function syncCartCount() {
+    const totalQty = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    cartCounterNode.textContent = totalQty.toString();
+  }
+
+  function calculateCartTotals() {
+    const subtotal = cartItems.reduce((sum, item) => sum + (item.finalPrice * item.quantity), 0);
+    const applyFirstBuyDiscount = isFirstTimeCustomer() && cartItems.length > 0;
+    const discountAmount = applyFirstBuyDiscount ? subtotal * FIRST_BUY_DISCOUNT : 0;
+    const total = subtotal - discountAmount;
+    return { subtotal, discountAmount, total, applyFirstBuyDiscount };
+  }
+
+  function renderFlashSaleProducts() {
+    const flashProducts = products.filter(p => p.isFlash);
+    flashSaleGridNode.innerHTML = flashProducts.map(p => `
+      <div class="flash-card" data-product-id="${p.id}">
+        <div class="flash-card-img">
+          <div class="discount-badge">
+            <span class="discount-badge-percent">-${p.promoPercent}%</span>
+            <span class="discount-badge-text">SAVE</span>
+          </div>
+          <button class="wishlist-btn-flash" onclick="toggleWishlist(event)">♥</button>
+          <img src="${p.img}" alt="${p.name}">
+        </div>
+        <div class="flash-card-body">
+          <span class="flash-card-country">${p.country}</span>
+          <h3 class="flash-card-name">${p.name}</h3>
+          <p class="flash-card-brand">${p.brand}</p>
+          <span class="flash-card-spf">${p.spf}</span>
+          <div class="flash-card-stars">${p.stars} <span>(${p.reviews})</span></div>
+          <div class="flash-card-prices">
+            <div class="flash-card-original-price">${formatMoney(p.price)}</div>
+            <div class="flash-card-price">
+              ${formatMoney(p.promoPrice)}
+              <span class="flash-card-savings">Save ${formatMoney(p.price - p.promoPrice)}</span>
+            </div>
+          </div>
+          <div class="flash-card-actions">
+            <div class="flash-qty-control">
+              <button class="flash-qty-btn minus" onclick="adjustQty(this, -1)">-</button>
+              <span class="flash-qty-num">1</span>
+              <button class="flash-qty-btn plus" onclick="adjustQty(this, 1)">+</button>
+            </div>
+            <button class="flash-add-btn" onclick="addToCart(${p.id}, this)">Add to Bag</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderAllProducts() {
+    const allProducts = products.filter(p => !p.isFlash);
+    productGridNode.innerHTML = allProducts.map(p => `
+      <div class="product-card" data-skin="${p.skin}" data-status="${p.status}" data-name="${p.name}" data-price="${p.price}" data-product-id="${p.id}">
+        ${p.promoPercent > 0 ? `<span class="product-promo-badge">-${p.promoPercent}% SALE</span>` : ''}
+        <div class="product-img">
+          <button class="wishlist-btn" onclick="toggleWishlist(event)">♥</button>
+          <img src="${p.img}" alt="${p.name}">
+        </div>
+        <div class="product-body">
+          <span class="product-country">${p.country}</span>
+          <h3 class="product-name">${p.name}</h3>
+          <p class="product-brand">${p.brand}</p>
+          <span class="product-spf">${p.spf}</span>
+          <div class="product-stars">${p.stars} <span>(${p.reviews})</span></div>
+          <div class="price-row">
+            ${p.promoPercent > 0 ? `<span class="price-original">${formatMoney(p.price)}</span>` : ''}
+            <span class="price">${formatMoney(getProductPrice(p))}</span>
+          </div>
+          <div class="add-row">
+            <div class="qty-control">
+              <button class="qty-btn minus" onclick="adjustQty(this, -1)">-</button>
+              <span class="qty-num">1</span>
+              <button class="qty-btn plus" onclick="adjustQty(this, 1)">+</button>
+            </div>
+            <button class="add-btn" onclick="addToCart(${p.id}, this)">Add to Bag</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+    matchCounterNode.textContent = allProducts.length === 1 ? "1 Item" : `${allProducts.length} Items`;
+  }
+
+  function adjustQty(btn, change) {
+    const qtySpan = btn.parentElement.querySelector('.qty-num') || btn.parentElement.querySelector('.flash-qty-num');
+    let qty = parseInt(qtySpan.textContent, 10);
+    qty += change;
+    if (qty < 1) qty = 1;
+    qtySpan.textContent = qty;
+  }
+
+  function toggleWishlist(event) {
+    event.stopPropagation();
+    event.target.classList.toggle('liked');
+    event.target.style.color = event.target.classList.contains('liked') ? 'var(--coral)' : 'initial';
+  }
+
+  function addToCart(productId, btn) {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    const card = btn.closest('.product-card') || btn.closest('.flash-card');
+    const qtySpan = card.querySelector('.qty-num') || card.querySelector('.flash-qty-num');
+    const qty = parseInt(qtySpan.textContent, 10);
+    const finalPrice = getProductPrice(product);
+
+    const existing = cartItems.find(item => item.id === productId);
+    if (existing) {
+      existing.quantity += qty;
+    } else {
+      cartItems.push({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        finalPrice,
+        quantity: qty,
+        promoPercent: product.promoPercent || 0
+      });
+    }
+
+    syncCartCount();
+
+    const originalText = btn.textContent;
+    btn.textContent = "Added! ✓";
+    btn.style.background = "var(--sage)";
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.style.background = "var(--terracotta)";
+      qtySpan.textContent = "1";
+    }, 1200);
+  }
+
+  function updateCheckoutSummary() {
+    const { subtotal, discountAmount, total, applyFirstBuyDiscount } = calculateCartTotals();
+    document.getElementById('checkoutSubtotal').textContent = formatMoney(subtotal);
+    document.getElementById('checkoutDiscountRow').style.display = applyFirstBuyDiscount ? 'flex' : 'none';
+    document.getElementById('checkoutDiscountAmount').textContent = `-${formatMoney(discountAmount)}`;
+    document.getElementById('checkoutTotal').textContent = formatMoney(total);
+  }
+
+  function updateCartDisplay() {
+    const cartContainer = document.getElementById('cartItemsContainer');
+    const subtotalSpan = document.getElementById('subtotal');
+    const discountRow = document.getElementById('discountRow');
+    const discountAmountSpan = document.getElementById('discountAmount');
+    const totalSpan = document.getElementById('totalPrice');
+    const firstBuyNote = document.getElementById('firstBuyNote');
+
+    if (cartItems.length === 0) {
+      cartContainer.innerHTML = '<div class="empty-cart">Your cart is empty. Start shopping! 🛍️</div>';
+      subtotalSpan.textContent = formatMoney(0);
+      discountRow.style.display = 'none';
+      totalSpan.textContent = formatMoney(0);
+      checkoutBtn.disabled = true;
+      if (firstBuyNote) firstBuyNote.style.display = isFirstTimeCustomer() ? 'block' : 'none';
+      updateCheckoutSummary();
+      return;
+    }
+
+    checkoutBtn.disabled = false;
+
+    cartContainer.innerHTML = cartItems.map((item, idx) => `
+      <div class="cart-item">
+        <div class="cart-item-info">
+          <h4>${item.name}</h4>
+          <p>${item.promoPercent > 0 ? `<span style="color: var(--coral); font-weight: 700;">-${item.promoPercent}% OFF</span> · ` : ''}Unit: ${formatMoney(item.finalPrice)}</p>
+        </div>
+        <div class="cart-item-actions">
+          <div class="cart-qty-control">
+            <button type="button" class="cart-qty-btn" onclick="updateCartItemQty(${idx}, -1)">-</button>
+            <span class="cart-qty-num">${item.quantity}</span>
+            <button type="button" class="cart-qty-btn" onclick="updateCartItemQty(${idx}, 1)">+</button>
+          </div>
+          <div class="cart-item-price">${formatMoney(item.finalPrice * item.quantity)}</div>
+          <button type="button" class="cart-remove-btn" onclick="removeCartItem(${idx})">Remove</button>
+        </div>
+      </div>
+    `).join('');
+
+    const { subtotal, discountAmount, total, applyFirstBuyDiscount } = calculateCartTotals();
+
+    subtotalSpan.textContent = formatMoney(subtotal);
+
+    if (applyFirstBuyDiscount) {
+      discountRow.style.display = 'flex';
+      discountAmountSpan.textContent = `-${formatMoney(discountAmount)}`;
+      if (firstBuyNote) firstBuyNote.style.display = 'block';
+    } else {
+      discountRow.style.display = 'none';
+      if (firstBuyNote) firstBuyNote.style.display = 'none';
+    }
+
+    totalSpan.textContent = formatMoney(total);
+    updateCheckoutSummary();
+  }
+
+  window.updateCartItemQty = function(index, change) {
+    const item = cartItems[index];
+    if (!item) return;
+    item.quantity += change;
+    if (item.quantity <= 0) cartItems.splice(index, 1);
+    syncCartCount();
+    updateCartDisplay();
+  };
+
+  window.removeCartItem = function(index) {
+    cartItems.splice(index, 1);
+    syncCartCount();
+    updateCartDisplay();
+  };
+
+  function showCartView() {
+    cartView.style.display = 'block';
+    checkoutView.style.display = 'none';
+    checkoutSuccess.style.display = 'none';
+    document.getElementById('cartModalTitle').textContent = 'Your Cart';
+  }
+
+  function showCheckoutView() {
+    if (cartItems.length === 0) return;
+    cartView.style.display = 'none';
+    checkoutView.style.display = 'block';
+    checkoutSuccess.style.display = 'none';
+    document.getElementById('cartModalTitle').textContent = 'Checkout';
+    updateCheckoutSummary();
+    clearCheckoutErrors();
+  }
+
+  function clearCheckoutErrors() {
+    ['checkoutFullName', 'checkoutPhone', 'checkoutEmail', 'checkoutAddress'].forEach(id => {
+      const input = document.getElementById(id);
+      const error = document.getElementById(`${id}Error`);
+      if (input) input.classList.remove('input-error');
+      if (error) error.textContent = '';
+    });
+  }
+
+  function validateCheckoutForm() {
+    clearCheckoutErrors();
+    let isValid = true;
+
+    const fullName = document.getElementById('checkoutFullName').value.trim();
+    const phone = document.getElementById('checkoutPhone').value.trim();
+    const email = document.getElementById('checkoutEmail').value.trim();
+    const address = document.getElementById('checkoutAddress').value.trim();
+
+    if (!fullName) {
+      document.getElementById('checkoutFullNameError').textContent = 'Full name is required.';
+      document.getElementById('checkoutFullName').classList.add('input-error');
+      isValid = false;
+    }
+
+    if (!phone) {
+      document.getElementById('checkoutPhoneError').textContent = 'Phone number is required.';
+      document.getElementById('checkoutPhone').classList.add('input-error');
+      isValid = false;
+    } else if (!/^[\d\s+\-().]{7,20}$/.test(phone)) {
+      document.getElementById('checkoutPhoneError').textContent = 'Enter a valid phone number.';
+      document.getElementById('checkoutPhone').classList.add('input-error');
+      isValid = false;
+    }
+
+    if (!email) {
+      document.getElementById('checkoutEmailError').textContent = 'Email address is required.';
+      document.getElementById('checkoutEmail').classList.add('input-error');
+      isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      document.getElementById('checkoutEmailError').textContent = 'Enter a valid email address.';
+      document.getElementById('checkoutEmail').classList.add('input-error');
+      isValid = false;
+    }
+
+    if (!address) {
+      document.getElementById('checkoutAddressError').textContent = 'Delivery address is required.';
+      document.getElementById('checkoutAddress').classList.add('input-error');
+      isValid = false;
+    } else if (address.length < 10) {
+      document.getElementById('checkoutAddressError').textContent = 'Please enter a complete delivery address.';
+      document.getElementById('checkoutAddress').classList.add('input-error');
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  cartBtnHeader.addEventListener('click', () => {
+    cartModal.classList.add('active');
+    showCartView();
+    updateCartDisplay();
+  });
+
+  cartClose.addEventListener('click', () => {
+    cartModal.classList.remove('active');
+    showCartView();
+  });
+
+  cartModal.addEventListener('click', (e) => {
+    if (e.target === cartModal) {
+      cartModal.classList.remove('active');
+      showCartView();
+    }
+  });
+
+  checkoutBtn.addEventListener('click', () => {
+    if (cartItems.length === 0) return;
+    showCheckoutView();
+  });
+
+  checkoutBackBtn.addEventListener('click', () => {
+    showCartView();
+    updateCartDisplay();
+  });
+
+  checkoutForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (cartItems.length === 0) return;
+    if (!validateCheckoutForm()) return;
+
+    const order = {
+      customer: {
+        fullName: document.getElementById('checkoutFullName').value.trim(),
+        phone: document.getElementById('checkoutPhone').value.trim(),
+        email: document.getElementById('checkoutEmail').value.trim(),
+        address: document.getElementById('checkoutAddress').value.trim()
+      },
+      items: cartItems,
+      totals: calculateCartTotals()
+    };
+
+    console.log('Order placed:', order);
+    localStorage.setItem(FIRST_BUY_KEY, 'true');
+
+    cartItems = [];
+    syncCartCount();
+    checkoutForm.reset();
+    cartView.style.display = 'none';
+    checkoutView.style.display = 'none';
+    checkoutSuccess.style.display = 'block';
+    document.getElementById('cartModalTitle').textContent = 'Order Confirmed';
+
+    setTimeout(() => {
+      cartModal.classList.remove('active');
+      showCartView();
+      updateCartDisplay();
+    }, 2500);
+  });
+
+  promoCloseBtn.addEventListener('click', () => {
+    promoBanner.style.display = 'none';
+  });
+
+  function startCountdown() {
+    const countdownSpan = document.getElementById('countdownTimer');
+    let daysLeft = 7;
+    let hoursLeft = 0;
+    let minutesLeft = 0;
+
+    function updateCountdown() {
+      if (minutesLeft > 0) {
+        minutesLeft--;
+      } else if (hoursLeft > 0) {
+        hoursLeft--;
+        minutesLeft = 59;
+      } else if (daysLeft > 0) {
+        daysLeft--;
+        hoursLeft = 23;
+        minutesLeft = 59;
+      }
+
+      if (daysLeft > 0) {
+        countdownSpan.textContent = `${daysLeft} day${daysLeft > 1 ? 's' : ''} ${hoursLeft}h`;
+      } else if (hoursLeft > 0) {
+        countdownSpan.textContent = `${hoursLeft}h ${minutesLeft}m`;
+      } else {
+        countdownSpan.textContent = `${minutesLeft}m remaining`;
+      }
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 60000);
+  }
+
+  searchNode.addEventListener('input', () => {
+    const query = searchNode.value.toLowerCase();
+    const visibleCards = document.querySelectorAll('.product-card');
+    let matches = 0;
+    visibleCards.forEach(card => {
+      const name = (card.getAttribute('data-name') || '').toLowerCase();
+      if (name.includes(query)) {
+        card.style.display = 'flex';
+        matches++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    matchCounterNode.textContent = matches === 1 ? "1 Item" : `${matches} Items`;
+  });
+
+  chipNodes.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chipNodes.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      runningActiveFilter = chip.getAttribute('data-filter');
+      filterProducts();
+    });
+  });
+
+  navNodes.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      navNodes.forEach(n => n.classList.remove('active'));
+      link.classList.add('active');
+      activeNavFilter = link.getAttribute('data-nav');
+      filterProducts();
+    });
+  });
+
+  function filterProducts() {
+    const cards = document.querySelectorAll('.product-card');
+    let matches = 0;
+    cards.forEach(card => {
+      const skins = (card.getAttribute('data-skin') || '').toLowerCase().split(/\s+/);
+      const status = card.getAttribute('data-status');
+      const fitsSkin = runningActiveFilter === "all" || skins.includes(runningActiveFilter);
+      const fitsStatus = activeNavFilter === "all" || status === activeNavFilter;
+
+      if (fitsSkin && fitsStatus) {
+        card.style.display = 'flex';
+        matches++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    matchCounterNode.textContent = matches === 1 ? "1 Item" : `${matches} Items`;
+  }
+
+  contactFormNode.addEventListener('submit', (event) => {
+    event.preventDefault();
+    console.log("Registered Email:", document.getElementById('userEmail').value);
+    console.log("Registered Phone:", document.getElementById('userPhone').value);
+    contactFormNode.style.display = 'none';
+    successMessageNode.style.display = 'block';
+  });
+</script>
+</body>
+</html>
